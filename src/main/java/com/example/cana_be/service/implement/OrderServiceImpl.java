@@ -39,7 +39,6 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public void createCurrentOrder(User user) {
         Orders orders = new Orders();
-//        User user = usersDetailService.getCurrentUser();
         orders.setUser(user);
         orders.setStatusId(1);
         orderRepo.save(orders);
