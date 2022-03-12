@@ -16,6 +16,8 @@ public class OrderDetail {
 
     private int orderQuantity;
 
+    @ManyToOne
+    private Orders orders;
 
     public OrderDetail() {
     }
@@ -43,5 +45,13 @@ public class OrderDetail {
 
     public void setOrderQuantity(int orderQuantity) {
         this.orderQuantity = orderQuantity;
+    }
+
+    public Orders getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
     }
 }

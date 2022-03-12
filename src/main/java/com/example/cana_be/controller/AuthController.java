@@ -9,6 +9,7 @@ import com.example.cana_be.model.RoleName;
 import com.example.cana_be.model.User;
 import com.example.cana_be.security.jwt.JwtProvider;
 import com.example.cana_be.security.userprincal.UserPrinciple;
+import com.example.cana_be.service.extend.IOrderService;
 import com.example.cana_be.service.extend.IRoleService;
 import com.example.cana_be.service.extend.IStatusService;
 import com.example.cana_be.service.extend.IUserService;
@@ -30,6 +31,10 @@ import java.util.Set;
 @RestController
 @CrossOrigin(origins = "*")
 public class AuthController {
+
+    @Autowired
+    IOrderService orderService;
+
     @Autowired
     IUserService userService;
 
@@ -83,6 +88,10 @@ public class AuthController {
                 return ResponseEntity.ok(new JwtResponse(userPrinciple.getId(), token, userPrinciple.getName(), userPrinciple.getAvatar(),userPrinciple.getAuthorities()));
             } else if (r.getName().equals(RoleName.CUSTOMER)) {
                 String token = jwtProvider.createToken(authentication);
+                if (!orderService.existsByUserAndStatusId(userLogin,1)) {
+                    orderService.createCurrentOrder(userLogin);
+                }
+
                 return ResponseEntity.ok(new JwtResponse(userPrinciple.getId(), token, userPrinciple.getName(),userPrinciple.getAvatar(), userPrinciple.getAuthorities()));
 
             }

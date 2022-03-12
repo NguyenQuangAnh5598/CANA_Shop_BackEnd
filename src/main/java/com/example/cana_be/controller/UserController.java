@@ -61,4 +61,6 @@ public class UserController {
         userService.remove(id);
         return new ResponseEntity<>(new ResponseMessage("Delete completed"),HttpStatus.OK);
     }
+
+
 }
