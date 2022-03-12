@@ -1,5 +1,6 @@
 package com.example.cana_be.service.implement;
 
+import com.example.cana_be.model.OrderDetail;
 import com.example.cana_be.model.Product;
 import com.example.cana_be.repository.IProductRepo;
 import com.example.cana_be.service.extend.IProductService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class ProductServiceImpl implements IProductService {
     @Autowired
@@ -34,5 +36,10 @@ public class ProductServiceImpl implements IProductService {
     }
 
 
+    @Override
+    public void setQuantity(Product product, int quantity) {
+        product.setQuantity(product.getQuantity() - quantity);
+        productRepo.save(product);
+    }
 
 }

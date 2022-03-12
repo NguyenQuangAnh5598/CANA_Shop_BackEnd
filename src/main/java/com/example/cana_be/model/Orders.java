@@ -25,9 +25,6 @@ public class Orders {
 
     private Timestamp createTime;
 
-    @OneToMany
-    private List<OrderDetail> orderDetailList;
-
 
     public Long getId() {
         return id;
@@ -77,11 +74,5 @@ public class Orders {
         this.createTime = createTime;
     }
 
-    public List<OrderDetail> getOrderDetailList() {
-        return orderDetailList;
-    }
 
-    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
-        this.orderDetailList = orderDetailList;
-    }
 }
