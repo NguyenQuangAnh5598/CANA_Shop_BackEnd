@@ -32,4 +32,7 @@ public class ProductServiceImpl implements IProductService {
     public void remove(Long id) {
         productRepo.deleteById(id);
     }
+
+
+
 }
