@@ -37,6 +37,15 @@ public class ProductController {
         return new ResponseEntity<>(productOptional.get(),HttpStatus.OK);
     }
 
+    @GetMapping("/findProductByCategoryName")
+    public ResponseEntity<?> findProductByCategoryName(@RequestParam String name) {
+        List<Product> productList = productService.findProductByCategoryName(name);
+        if (productList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> createNewProduct(@RequestBody Product product) {
         productService.save(product);

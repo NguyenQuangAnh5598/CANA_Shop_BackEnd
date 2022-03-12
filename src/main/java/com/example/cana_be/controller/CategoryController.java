@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@RestController
+@CrossOrigin(origins = "*")
+@RequestMapping("/categories")
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
@@ -18,6 +21,15 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<?> showAllCategory() {
         List<Category> categoryList = categoryService.findAll();
+        if (categoryList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(categoryList,HttpStatus.OK);
+    }
+
+    @GetMapping("/findCategoryByName")
+    public ResponseEntity<?> findCategoryByName(@RequestParam String name) {
+        List<Category> categoryList = categoryService.findCategoryByName(name);
         if (categoryList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

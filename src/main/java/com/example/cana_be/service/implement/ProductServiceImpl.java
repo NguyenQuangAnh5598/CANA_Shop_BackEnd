@@ -42,4 +42,8 @@ public class ProductServiceImpl implements IProductService {
         productRepo.save(product);
     }
 
+    @Override
+    public List<Product> findProductByCategoryName(String name) {
+        return productRepo.findProductByCategoryName(name);
+    }
 }
