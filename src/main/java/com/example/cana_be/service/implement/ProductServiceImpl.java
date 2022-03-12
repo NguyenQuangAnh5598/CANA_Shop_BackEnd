@@ -1,5 +1,6 @@
 package com.example.cana_be.service.implement;
 
+import com.example.cana_be.model.OrderDetail;
 import com.example.cana_be.model.Product;
 import com.example.cana_be.repository.IProductRepo;
 import com.example.cana_be.service.extend.IProductService;
@@ -31,5 +32,11 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void remove(Long id) {
         productRepo.deleteById(id);
+    }
+
+    @Override
+    public void setQuantity(Product product, int quantity) {
+        product.setQuantity(product.getQuantity() - quantity);
+        productRepo.save(product);
     }
 }

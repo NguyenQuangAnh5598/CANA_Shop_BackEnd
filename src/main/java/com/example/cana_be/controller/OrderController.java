@@ -1,13 +1,17 @@
 package com.example.cana_be.controller;
 
 import com.example.cana_be.dto.response.ResponseMessage;
+import com.example.cana_be.model.OrderDetail;
 import com.example.cana_be.model.Orders;
+import com.example.cana_be.service.extend.IOrderDetailService;
 import com.example.cana_be.service.extend.IOrderService;
+import com.example.cana_be.service.extend.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +21,12 @@ import java.util.Optional;
 public class OrderController {
     @Autowired
     IOrderService orderService;
+
+    @Autowired
+    IOrderDetailService orderDetailService;
+
+    @Autowired
+    IProductService productService;
 
     @GetMapping
     public ResponseEntity<?> showAllOrder() {
@@ -59,7 +69,29 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         orderService.remove(id);
-        return new ResponseEntity<>(new ResponseMessage("Delete completed"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("OK"),HttpStatus.OK);
     }
 
+    @PutMapping("/payment/{id}")
+    public ResponseEntity<?> payment(@PathVariable Long id) {
+       Optional<Orders> orders = orderService.findById(id);
+        List<OrderDetail> orderDetailList = (List<OrderDetail>) orderDetailService.findAllByOrders(orders.get());
+        List<OrderDetail> errorOrderDetail = new ArrayList<>();
+        for (int i = 0; i < orderDetailList.size(); i++) {
+            if (orderDetailList.get(i).getOrderQuantity() > orderDetailList.get(i).getProduct().getQuantity()) {
+                errorOrderDetail.add(orderDetailList.get(i));
+                orderDetailService.remove(orderDetailList.get(i).getId());
+            }
+        }
+        if (errorOrderDetail.isEmpty())  {
+            for (int i = 0; i < orderDetailList.size(); i++) {
+                productService.setQuantity(orderDetailList.get(i).getProduct(),orderDetailList.get(i).getOrderQuantity());
+            }
+            orders.get().setStatusId(2);
+            orderService.save(orders.get());
+            orderService.createCurrentOrder(orders.get().getUser());
+            return new ResponseEntity<>(new ResponseMessage("OK"),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(errorOrderDetail,HttpStatus.OK);
+    }
 }

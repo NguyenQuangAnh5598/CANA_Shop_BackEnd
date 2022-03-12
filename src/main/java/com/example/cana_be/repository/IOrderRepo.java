@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface IOrderRepo extends JpaRepository<Orders,Long> {
     Optional<Orders> findOrdersByUserAndStatusId(User user, int id);
     Boolean existsByUserAndStatusId(User user,int id);
+
 }
