@@ -1,6 +1,7 @@
 package com.example.cana_be.service.implement;
 
 import com.example.cana_be.model.OrderDetail;
+import com.example.cana_be.model.Orders;
 import com.example.cana_be.repository.IOrderDetailRepo;
 import com.example.cana_be.service.extend.IOrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     @Override
     public void remove(Long id) {
         orderDetailRepo.deleteById(id);
+    }
+
+    @Override
+    public Iterable<OrderDetail> findAllByOrders(Orders orders) {
+        return orderDetailRepo.findAllByOrders(orders);
     }
 }

@@ -11,6 +11,7 @@ public class JwtResponse {
     private String type = "Bearer";
     private String name;
     private String avatar;
+    private Long orderId;
     private Collection<? extends GrantedAuthority> roles;
 
     public JwtResponse(Long id, String token, String name, String avatar, Collection<? extends GrantedAuthority> roles) {
@@ -19,6 +20,15 @@ public class JwtResponse {
         this.name = name;
         this.avatar = avatar;
         this.roles = roles;
+    }
+
+    public JwtResponse(Long id, String token, String name, String avatar, Collection<? extends GrantedAuthority> roles,Long orderId) {
+        this.id = id;
+        this.token = token;
+        this.name = name;
+        this.avatar = avatar;
+        this.roles = roles;
+        this.orderId = orderId;
     }
 
     public Long getId() {
