@@ -1,6 +1,7 @@
 package com.example.cana_be.controller;
 
 import com.example.cana_be.model.Product;
+import com.example.cana_be.repository.IProductRepo;
 import com.example.cana_be.service.extend.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
