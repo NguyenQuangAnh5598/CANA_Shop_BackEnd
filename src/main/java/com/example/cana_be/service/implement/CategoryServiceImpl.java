@@ -33,4 +33,9 @@ public class CategoryServiceImpl implements ICategoryService {
     public void remove(Long id) {
         styleRepo.deleteById(id);
     }
+
+    @Override
+    public List<Category> findCategoryByName(String name) {
+        return styleRepo.findCategoryByName(name);
+    }
 }

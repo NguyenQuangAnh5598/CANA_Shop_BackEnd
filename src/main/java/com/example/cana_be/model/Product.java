@@ -1,6 +1,8 @@
 package com.example.cana_be.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -28,6 +30,8 @@ public class Product {
     private String description;
 
     @ManyToOne
+    // Nam thêm
+    @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
     private Category category;
 
     public Product() {

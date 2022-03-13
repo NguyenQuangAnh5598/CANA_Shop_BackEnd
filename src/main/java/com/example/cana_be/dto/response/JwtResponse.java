@@ -8,7 +8,7 @@ public class JwtResponse {
 
     private Long id;
     private String token;
-    private String type = "Bearer";
+    private String type;
     private String name;
     private String avatar;
     private Long orderId;
