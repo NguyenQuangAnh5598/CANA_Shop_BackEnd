@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface IProductRepo extends JpaRepository<Product,Long> {
-
+    List<Product> findByPriceBetween(double minPrice, double maxPrice);
 }

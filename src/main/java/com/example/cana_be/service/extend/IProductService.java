@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface IProductService extends IGeneralService<Product> {
     void setQuantity(Product product, int quantity);
+    List<Product> findProductByPrice(double minPrice, double maxPrice);
+
 }
