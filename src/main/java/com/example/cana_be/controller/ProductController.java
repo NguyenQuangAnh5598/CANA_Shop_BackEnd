@@ -62,5 +62,10 @@ public class ProductController {
         productService.remove(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @GetMapping("/findbyname")
+    public ResponseEntity<List<Product>> getProductByName(@RequestParam String name){
+        return new ResponseEntity<>(productService.findByName(name), HttpStatus.OK);
+    }
+
 
 }
