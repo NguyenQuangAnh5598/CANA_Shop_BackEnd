@@ -10,7 +10,11 @@ import java.util.List;
 
 @Repository
 public interface IProductRepo extends JpaRepository<Product,Long> {
+
+    List<Product> findByPriceBetween(double minPrice, double maxPrice);
+
     @Modifying
     @Query(value = "select * from product p where p.name like %:name%",nativeQuery=true)
     List<Product> findByName(String name);
+
 }

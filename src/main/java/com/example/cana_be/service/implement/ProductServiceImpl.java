@@ -43,8 +43,15 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public List<Product> findProductByPrice(double minPrice, double maxPrice) {
+        List<Product> list = productRepo.findByPriceBetween(minPrice, maxPrice);
+        return list;
+    }
+
+    @Override
     public List<Product> findByName(String name) {
         return productRepo.findByName(name);
+
     }
 
 }
