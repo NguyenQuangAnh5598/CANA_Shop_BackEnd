@@ -62,9 +62,18 @@ public class ProductController {
         productService.remove(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @GetMapping("byPrice")
     public ResponseEntity<List<Product>> getProductByPrice(@RequestParam double minPrice, @RequestParam double maxPrice){
         List<Product> list = productService.findProductByPrice(minPrice,maxPrice);
         return new ResponseEntity<List<Product>>(list,HttpStatus.OK);
     }
+
+    @GetMapping("/findbyname")
+    public ResponseEntity<List<Product>> getProductByName(@RequestParam String name){
+        return new ResponseEntity<>(productService.findByName(name), HttpStatus.OK);
+    }
+
+
+
 }
