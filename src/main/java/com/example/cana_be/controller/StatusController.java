@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/status")
@@ -23,7 +24,7 @@ public class StatusController {
         if (statusList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(statusList,HttpStatus.OK);
+        return new ResponseEntity<>(statusList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -32,7 +33,7 @@ public class StatusController {
         if (!statusOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(statusOptional.get(),HttpStatus.OK);
+        return new ResponseEntity<>(statusOptional.get(), HttpStatus.OK);
     }
 
     @PostMapping
@@ -45,7 +46,7 @@ public class StatusController {
     public ResponseEntity<?> updateStatus(@RequestBody Status status) {
         Optional<Status> statusOptional = statusService.findById(status.getId());
         if (!statusOptional.isPresent()) {
-            return new ResponseEntity<>(new ResponseMessage("Không Có"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage("Không Có"), HttpStatus.NOT_FOUND);
         }
         statusService.save(status);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -58,7 +59,7 @@ public class StatusController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         statusService.remove(id);
-        return new ResponseEntity<>(new ResponseMessage("Delete completed"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("Delete completed"), HttpStatus.OK);
     }
 
 }

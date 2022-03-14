@@ -46,9 +46,9 @@ public class OrderDetailController {
     public ResponseEntity<?> createNewOrderDetail(@RequestBody OrderDetail orderDetail) {
         if (orderDetail.getProduct().getQuantity() == orderDetail.getOrderQuantity()) {
             orderDetailService.save(orderDetail);
-            return new ResponseEntity<>(new ResponseMessage("OK"),HttpStatus.CREATED);
+            return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(new ResponseMessage("Số lượng hàng không đủ, xin đặt lại sau"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("Số lượng hàng không đủ, xin đặt lại sau"), HttpStatus.OK);
     }
 
     @PutMapping

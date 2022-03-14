@@ -34,7 +34,7 @@ public class OrderController {
         if (ordersList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(ordersList,HttpStatus.OK);
+        return new ResponseEntity<>(ordersList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -43,7 +43,7 @@ public class OrderController {
         if (!ordersOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(ordersOptional.get(),HttpStatus.OK);
+        return new ResponseEntity<>(ordersOptional.get(), HttpStatus.OK);
     }
 
     @PostMapping
@@ -56,7 +56,7 @@ public class OrderController {
     public ResponseEntity<?> updateOrder(@RequestBody Orders orders) {
         Optional<Orders> ordersOptional = orderService.findById(orders.getId());
         if (!ordersOptional.isPresent()) {
-            return new ResponseEntity<>(new ResponseMessage("Không Có"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage("Không Có"), HttpStatus.NOT_FOUND);
         }
         orderService.save(orders);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -69,12 +69,12 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         orderService.remove(id);
-        return new ResponseEntity<>(new ResponseMessage("OK"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
     }
 
     @PutMapping("/payment/{id}")
     public ResponseEntity<?> payment(@PathVariable Long id) {
-       Optional<Orders> orders = orderService.findById(id);
+        Optional<Orders> orders = orderService.findById(id);
         List<OrderDetail> orderDetailList = (List<OrderDetail>) orderDetailService.findAllByOrders(orders.get());
         List<OrderDetail> errorOrderDetail = new ArrayList<>();
         for (int i = 0; i < orderDetailList.size(); i++) {
@@ -83,15 +83,15 @@ public class OrderController {
                 orderDetailService.remove(orderDetailList.get(i).getId());
             }
         }
-        if (errorOrderDetail.isEmpty())  {
+        if (errorOrderDetail.isEmpty()) {
             for (int i = 0; i < orderDetailList.size(); i++) {
-                productService.setQuantity(orderDetailList.get(i).getProduct(),orderDetailList.get(i).getOrderQuantity());
+                productService.setQuantity(orderDetailList.get(i).getProduct(), orderDetailList.get(i).getOrderQuantity());
             }
             orders.get().setStatusId(2);
             orderService.save(orders.get());
             orderService.createCurrentOrder(orders.get().getUser());
-            return new ResponseEntity<>(new ResponseMessage("OK"),HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
         }
-        return new ResponseEntity<>(errorOrderDetail,HttpStatus.OK);
+        return new ResponseEntity<>(errorOrderDetail, HttpStatus.OK);
     }
 }
