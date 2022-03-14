@@ -42,4 +42,19 @@ public class ProductServiceImpl implements IProductService {
         productRepo.save(product);
     }
 
+    @Override
+    public List<Product> findProductByCategoryName(String name) {
+        return productRepo.findProductByCategoryName(name);
+    }
+
+    public List<Product> findProductByPrice(double minPrice, double maxPrice) {
+        List<Product> list = productRepo.findByPriceBetween(minPrice, maxPrice);
+        return list;
+    }
+
+    @Override
+    public List<Product> findByName(String name) {
+        return productRepo.findByName(name);
+
+    }
 }

@@ -22,7 +22,6 @@ public class OrderDetail {
     public OrderDetail() {
     }
 
-
     public Long getId() {
         return id;
     }

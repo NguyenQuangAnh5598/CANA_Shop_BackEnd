@@ -37,6 +37,15 @@ public class ProductController {
         return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
     }
 
+    @GetMapping("/findProductByCategoryName")
+    public ResponseEntity<?> findProductByCategoryName(@RequestParam String name) {
+        List<Product> productList = productService.findProductByCategoryName(name);
+        if (productList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> createNewProduct(@RequestBody Product product) {
         productService.save(product);
@@ -61,6 +70,17 @@ public class ProductController {
         }
         productService.remove(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("byPrice")
+    public ResponseEntity<List<Product>> getProductByPrice(@RequestParam double minPrice, @RequestParam double maxPrice){
+        List<Product> list = productService.findProductByPrice(minPrice,maxPrice);
+        return new ResponseEntity<List<Product>>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("/findbyname")
+    public ResponseEntity<List<Product>> getProductByName(@RequestParam String name){
+        return new ResponseEntity<>(productService.findByName(name), HttpStatus.OK);
     }
 
 }
