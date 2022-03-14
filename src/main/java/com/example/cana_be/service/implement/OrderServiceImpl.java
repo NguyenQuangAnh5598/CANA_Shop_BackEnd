@@ -55,4 +55,9 @@ public class OrderServiceImpl implements IOrderService {
     public Boolean existsByUserAndStatusId(User user, int id) {
         return orderRepo.existsByUserAndStatusId(user,id);
     }
+
+    @Override
+    public List<Orders> findAllOrderByUserId(Long userId) {
+        return orderRepo.findAllOrderByUserId(userId);
+    }
 }

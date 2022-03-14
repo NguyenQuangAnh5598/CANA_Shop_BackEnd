@@ -37,7 +37,7 @@ public class ProductController {
         return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
     }
 
-    @GetMapping("/findProductByCategoryName")
+    @GetMapping("/findProductByCategory")
     public ResponseEntity<?> findProductByCategoryName(@RequestParam String name) {
         List<Product> productList = productService.findProductByCategoryName(name);
         if (productList.isEmpty()) {
