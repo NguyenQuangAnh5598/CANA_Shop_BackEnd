@@ -58,7 +58,7 @@ public class ProductController {
         if (!productOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        productService.save(productOptional.get());
+        productService.save(product);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
