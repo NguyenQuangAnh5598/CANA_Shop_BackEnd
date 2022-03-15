@@ -46,6 +46,15 @@ public class OrderController {
         return new ResponseEntity<>(ordersOptional.get(), HttpStatus.OK);
     }
 
+    @GetMapping("/findAllOrderByUserId")
+    public ResponseEntity<?> findAllOrderByUserId(@RequestParam Long userId) {
+        List<Orders> ordersList = orderService.findAllOrderByUserId(userId);
+        if(ordersList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(ordersList, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> createNewOrder(@RequestBody Orders orders) {
         orderService.save(orders);
