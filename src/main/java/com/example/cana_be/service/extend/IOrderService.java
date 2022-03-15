@@ -14,4 +14,5 @@ public interface IOrderService extends IGeneralService<Orders> {
     Boolean existsByUserAndStatusId(User user,int id);
 
     List<Orders> findAllOrderByUserId(Long userId);
+
 }
