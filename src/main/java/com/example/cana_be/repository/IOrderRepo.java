@@ -17,4 +17,8 @@ public interface IOrderRepo extends JpaRepository<Orders,Long> {
 
     @Query(value = "select * from orders ord join users us on ord.user_id = us.id and us.id = :userId", nativeQuery = true)
     List<Orders> findAllOrderByUserId(@Param("userId") Long userId);
+
+
+
+
 }
