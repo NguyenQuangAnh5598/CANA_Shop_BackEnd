@@ -1,6 +1,7 @@
 package com.example.cana_be.controller;
 
 import com.example.cana_be.model.Product;
+import com.example.cana_be.repository.IProductRepo;
 import com.example.cana_be.service.extend.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class ProductController {
         if (productList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(productList,HttpStatus.OK);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -33,7 +34,16 @@ public class ProductController {
         if (!productOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(productOptional.get(),HttpStatus.OK);
+        return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/findProductByCategory")
+    public ResponseEntity<?> findProductByCategoryName(@RequestParam String name) {
+        List<Product> productList = productService.findProductByCategoryName(name);
+        if (productList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
     @PostMapping
@@ -46,20 +56,31 @@ public class ProductController {
     public ResponseEntity<?> updateProduct(@RequestBody Product product) {
         Optional<Product> productOptional = productService.findById(product.getId());
         if (!productOptional.isPresent()) {
-            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        productService.save(productOptional.get());
+        productService.save(product);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-            public ResponseEntity<?> deleteProductById(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProductById(@PathVariable Long id) {
         Optional<Product> productOptional = productService.findById(id);
         if (!productOptional.isPresent()) {
-            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         productService.remove(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("byPrice")
+    public ResponseEntity<List<Product>> getProductByPrice(@RequestParam double minPrice, @RequestParam double maxPrice) {
+        List<Product> list = productService.findProductByPrice(minPrice, maxPrice);
+        return new ResponseEntity<List<Product>>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/findbyname")
+    public ResponseEntity<List<Product>> getProductByName(@RequestParam String name) {
+        return new ResponseEntity<>(productService.findByName(name), HttpStatus.OK);
     }
 
 }

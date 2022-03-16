@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class OrderServiceImpl implements IOrderService {
 
@@ -53,5 +54,10 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public Boolean existsByUserAndStatusId(User user, int id) {
         return orderRepo.existsByUserAndStatusId(user,id);
+    }
+
+    @Override
+    public List<Orders> findAllOrderByUserId(Long userId) {
+        return orderRepo.findAllOrderByUserId(userId);
     }
 }

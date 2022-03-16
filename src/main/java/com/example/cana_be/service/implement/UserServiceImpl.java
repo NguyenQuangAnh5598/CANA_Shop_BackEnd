@@ -48,4 +48,9 @@ public class UserServiceImpl implements IUserService {
     public Boolean existsByEmail(String email) {
         return userRepo.existsByEmail(email);
     }
+
+    @Override
+    public List<User> findByUsernameOrEmail(String userOrEmail) {
+        return userRepo.findByUsernameOrEmail(userOrEmail);
+    }
 }

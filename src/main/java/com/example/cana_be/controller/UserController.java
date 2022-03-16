@@ -24,7 +24,7 @@ public class UserController {
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(userList,HttpStatus.OK);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -33,20 +33,20 @@ public class UserController {
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userOptional.get(),HttpStatus.OK);
+        return new ResponseEntity<>(userOptional.get(), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> createNewUser(@RequestBody User user) {
         userService.save(user);
-       return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user) {
         Optional<User> userOptional = userService.findById(user.getId());
         if (!userOptional.isPresent()) {
-            return new ResponseEntity<>(new ResponseMessage("Không Có"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage("Không Có"), HttpStatus.NOT_FOUND);
         }
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -59,8 +59,14 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         userService.remove(id);
-        return new ResponseEntity<>(new ResponseMessage("Delete completed"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("Delete completed"), HttpStatus.OK);
     }
-
-
+    @GetMapping("/findUserByUsernameOrEmail")
+    public ResponseEntity<List<User>> getUserByUsernameOrEmail(@RequestParam() String userOrEmail){
+        List<User> userList = userService.findByUsernameOrEmail(userOrEmail);
+        if(userList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(userList,HttpStatus.OK);
+    }
 }

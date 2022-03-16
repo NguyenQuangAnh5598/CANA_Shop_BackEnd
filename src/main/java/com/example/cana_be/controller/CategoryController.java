@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@RestController
+@CrossOrigin(origins = "*")
+@RequestMapping("/categories")
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
@@ -21,7 +24,16 @@ public class CategoryController {
         if (categoryList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(categoryList,HttpStatus.OK);
+        return new ResponseEntity<>(categoryList, HttpStatus.OK);
+    }
+
+    @GetMapping("/findCategoryByName")
+    public ResponseEntity<?> findCategoryByName(@RequestParam String name) {
+        List<Category> categoryList = categoryService.findCategoryByName(name);
+        if (categoryList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(categoryList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -30,7 +42,7 @@ public class CategoryController {
         if (!categoryOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(categoryOptional.get(),HttpStatus.OK);
+        return new ResponseEntity<>(categoryOptional.get(), HttpStatus.OK);
     }
 
     @PostMapping
@@ -43,7 +55,7 @@ public class CategoryController {
     public ResponseEntity<?> updateCategory(@RequestBody Category category) {
         Optional<Category> categoryOptional = categoryService.findById(category.getId());
         if (!categoryOptional.isPresent()) {
-            return new ResponseEntity<>(new ResponseMessage("Không Có"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage("Không Có"), HttpStatus.NOT_FOUND);
         }
         categoryService.save(category);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -56,6 +68,6 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         categoryService.remove(id);
-        return new ResponseEntity<>(new ResponseMessage("Delete completed"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("Delete completed"), HttpStatus.OK);
     }
 }

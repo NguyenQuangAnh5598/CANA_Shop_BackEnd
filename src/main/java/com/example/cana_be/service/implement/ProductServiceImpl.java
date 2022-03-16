@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class ProductServiceImpl implements IProductService {
     @Autowired
@@ -34,9 +35,26 @@ public class ProductServiceImpl implements IProductService {
         productRepo.deleteById(id);
     }
 
+
     @Override
     public void setQuantity(Product product, int quantity) {
         product.setQuantity(product.getQuantity() - quantity);
         productRepo.save(product);
+    }
+
+    @Override
+    public List<Product> findProductByCategoryName(String name) {
+        return productRepo.findProductByCategoryName(name);
+    }
+
+    public List<Product> findProductByPrice(double minPrice, double maxPrice) {
+        List<Product> list = productRepo.findByPriceBetween(minPrice, maxPrice);
+        return list;
+    }
+
+    @Override
+    public List<Product> findByName(String name) {
+        return productRepo.findByName(name);
+
     }
 }
