@@ -8,6 +8,7 @@ import com.example.cana_be.service.extend.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,5 +60,15 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public List<Orders> findAllOrderByUserId(Long userId) {
         return orderRepo.findAllOrderByUserId(userId);
+    }
+
+    @Override
+    public List<Orders> statisticalOrderByTime(Date startDate, Date endDate) {
+        return orderRepo.statisticalOrderByTime(startDate, endDate);
+    }
+
+    @Override
+    public double statisticalRevenueByTime(Date startDate, Date endDate) {
+        return orderRepo.statisticalRevenueByTime(startDate, endDate);
     }
 }
