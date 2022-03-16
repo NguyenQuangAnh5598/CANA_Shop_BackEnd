@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,12 +47,13 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(ordersOptional.get(), HttpStatus.OK);
+
     }
 
     @GetMapping("/findAllOrderByUserId")
     public ResponseEntity<?> findAllOrderByUserId(@RequestParam Long userId) {
         List<Orders> ordersList = orderService.findAllOrderByUserId(userId);
-        if(ordersList.isEmpty()) {
+        if (ordersList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(ordersList, HttpStatus.OK);
@@ -79,7 +82,7 @@ public class OrderController {
         orders.setStatusId(5);
         List<OrderDetail> orderDetailList = (List<OrderDetail>) orderDetailService.findAllByOrders(orders);
         //lay danh sach orderdetail, duyet danh sach
-        for(int i = 0; i < orderDetailList.size(); i++){
+        for (int i = 0; i < orderDetailList.size(); i++) {
             //lay so luong product trong bang orderdetail
             int quantityOfOrderDetail = orderDetailList.get(i).getOrderQuantity();
             //lay so luong product trong bang product
@@ -98,9 +101,9 @@ public class OrderController {
     @PutMapping("/acceptOrder/{id}")
     public ResponseEntity<?> acceptOrder(@PathVariable Long id) {
         Orders orders = orderService.findById(id).get();
-        if(orders.getStatusId() == 2) {
+        if (orders.getStatusId() == 2) {
             orders.setStatusId(3);
-        } else if(orders.getStatusId() == 3) {
+        } else if (orders.getStatusId() == 3) {
             orders.setStatusId(4);
         }
         orderService.save(orders);
@@ -122,11 +125,22 @@ public class OrderController {
             for (int i = 0; i < orderDetailList.size(); i++) {
                 productService.setQuantity(orderDetailList.get(i).getProduct(), orderDetailList.get(i).getOrderQuantity());
             }
-            orders.get().setStatusId(2);
-            orderService.save(orders.get());
-            orderService.createCurrentOrder(orders.get().getUser());
-            return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
+            if (!orderDetailList.isEmpty()) {
+                orders.get().setStatusId(2);
+                orders.get().setCreateTime(Timestamp.from(Instant.now()));
+                orderService.save(orders.get());
+                if (!orderService.existsByUserAndStatusId(orders.get().getUser(), 1)) {
+                    orderService.createCurrentOrder(orders.get().getUser());
+                    return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
+                }
+            } else {
+                return new ResponseEntity<>(new ResponseMessage("NO"), HttpStatus.NO_CONTENT);
+            }
+        } else {
+            return new ResponseEntity<>(errorOrderDetail, HttpStatus.OK);
         }
-        return new ResponseEntity<>(errorOrderDetail, HttpStatus.OK);
+
     }
 }
