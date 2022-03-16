@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,21 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(ordersList, HttpStatus.OK);
+    }
+
+    @GetMapping("/statisticalOrderByTime")
+    public ResponseEntity<?> statisticalOrderByTime(@RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate) {
+        List<Orders> ordersList = orderService.statisticalOrderByTime(startDate, endDate);
+        if(ordersList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(ordersList, HttpStatus.OK);
+    }
+
+    @GetMapping("/statisticalRevenueByTime")
+    public ResponseEntity<?> statisticalRevenueByTime(@RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate) {
+        double totalRevenue = orderService.statisticalRevenueByTime(startDate, endDate);
+        return new ResponseEntity<>(totalRevenue, HttpStatus.OK);
     }
 
     @PostMapping
