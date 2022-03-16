@@ -95,6 +95,18 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/acceptOrder/{id}")
+    public ResponseEntity<?> acceptOrder(@PathVariable Long id) {
+        Orders orders = orderService.findById(id).get();
+        if(orders.getStatusId() == 2) {
+            orders.setStatusId(3);
+        } else if(orders.getStatusId() == 3) {
+            orders.setStatusId(4);
+        }
+        orderService.save(orders);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
     @PutMapping("/payment/{id}")
     public ResponseEntity<?> payment(@PathVariable Long id) {
         Optional<Orders> orders = orderService.findById(id);
