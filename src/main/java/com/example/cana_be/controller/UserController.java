@@ -1,7 +1,9 @@
 package com.example.cana_be.controller;
 
 import com.example.cana_be.dto.response.ResponseMessage;
+import com.example.cana_be.model.Orders;
 import com.example.cana_be.model.User;
+import com.example.cana_be.service.extend.IOrderService;
 import com.example.cana_be.service.extend.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,9 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    private IOrderService orderService;
+
     @Autowired
     private IUserService userService;
 
@@ -68,5 +73,12 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(userList,HttpStatus.OK);
+    }
+
+    @GetMapping("/findCurrentOrder/{id}")
+    public ResponseEntity<Orders> findCurrentOrder(@PathVariable Long id) {
+        Optional<User> user = userService.findById(id);
+        Orders orders =  orderService.findOrdersByUserAndStatusId(user.get(),1);
+        return new ResponseEntity<>(orders,HttpStatus.OK);
     }
 }
