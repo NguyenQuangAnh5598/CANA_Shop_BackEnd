@@ -79,8 +79,11 @@ public class ProductController {
     }
 
     @GetMapping("/findbyname")
-    public ResponseEntity<List<Product>> getProductByName(@RequestParam String name) {
+    public ResponseEntity<List<Product>> getProductByName(@RequestParam  String name) {
         return new ResponseEntity<>(productService.findByName(name), HttpStatus.OK);
     }
-
+    @GetMapping("/top3BestSale")
+    public  ResponseEntity<List<Product>> top3BestSale(){
+        return new ResponseEntity<>(productService.top3BestSale(),HttpStatus.OK);
+    }
 }

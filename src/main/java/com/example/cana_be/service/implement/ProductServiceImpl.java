@@ -57,4 +57,9 @@ public class ProductServiceImpl implements IProductService {
         return productRepo.findByName(name);
 
     }
+
+    @Override
+    public List<Product> top3BestSale() {
+        return productRepo.top3BestSale();
+    }
 }

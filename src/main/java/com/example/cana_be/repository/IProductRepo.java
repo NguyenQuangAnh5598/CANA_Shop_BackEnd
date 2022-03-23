@@ -21,5 +21,11 @@ public interface IProductRepo extends JpaRepository<Product,Long> {
     @Modifying
     @Query(value = "select * from product p where p.name like %:name%",nativeQuery=true)
     List<Product> findByName(String name);
-
+    @Query(value = "select p.id,description,image,manufacturer,name,price,p.quantity,category_id,sum(order_quantity)\n" +
+            "from product p join order_detail od\n" +
+            "on p.id = od.product_id \n" +
+            "group by   p.id,description,image,manufacturer,name,price,p.quantity,category_id\n" +
+            "order by sum(order_quantity) desc,price asc \n" +
+            "limit 3; ",nativeQuery=true)
+    List<Product> top3BestSale();
 }

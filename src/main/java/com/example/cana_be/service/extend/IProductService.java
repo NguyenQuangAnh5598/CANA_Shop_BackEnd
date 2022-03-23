@@ -12,5 +12,6 @@ public interface IProductService extends IGeneralService<Product> {
     public List<Product> findProductByCategoryName(String name);
     List<Product> findProductByPrice(double minPrice, double maxPrice);
     List<Product> findByName(String name);
+    List<Product> top3BestSale();
 
 }
