@@ -71,4 +71,10 @@ public class OrderServiceImpl implements IOrderService {
     public double statisticalRevenueByTime(Date startDate, Date endDate) {
         return orderRepo.statisticalRevenueByTime(startDate, endDate);
     }
+
+
+    @Override
+    public List<Orders> findAllOrderByStatusId(int id) {
+        return orderRepo.findAllByStatusId(id);
+    }
 }

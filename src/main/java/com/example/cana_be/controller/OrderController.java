@@ -3,10 +3,10 @@ package com.example.cana_be.controller;
 import com.example.cana_be.dto.response.ResponseMessage;
 import com.example.cana_be.model.OrderDetail;
 import com.example.cana_be.model.Orders;
-import com.example.cana_be.model.Product;
 import com.example.cana_be.service.extend.IOrderDetailService;
 import com.example.cana_be.service.extend.IOrderService;
 import com.example.cana_be.service.extend.IProductService;
+import com.example.cana_be.service.extend.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +31,9 @@ public class OrderController {
 
     @Autowired
     IProductService productService;
+
+    @Autowired
+    IUserService userService;
 
     @GetMapping
     public ResponseEntity<?> showAllOrder() {
@@ -63,7 +66,7 @@ public class OrderController {
     @GetMapping("/statisticalOrderByTime")
     public ResponseEntity<?> statisticalOrderByTime(@RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate) {
         List<Orders> ordersList = orderService.statisticalOrderByTime(startDate, endDate);
-        if(ordersList.isEmpty()) {
+        if (ordersList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(ordersList, HttpStatus.OK);
@@ -123,7 +126,7 @@ public class OrderController {
             orders.setStatusId(4);
         }
         orderService.save(orders);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("ok"), HttpStatus.OK);
     }
 
     @PutMapping("/payment/{id}")
@@ -157,6 +160,12 @@ public class OrderController {
         } else {
             return new ResponseEntity<>(errorOrderDetail, HttpStatus.OK);
         }
-
     }
+
+    @GetMapping("/findAllOrderByStatusId/{statusId}")
+    public ResponseEntity<?> findOrderByUerAndStatusId(@PathVariable int statusId) {
+        List<Orders> orderList = orderService.findAllOrderByStatusId(statusId);
+        return new ResponseEntity<>(orderList, HttpStatus.OK);
+    }
+
 }
