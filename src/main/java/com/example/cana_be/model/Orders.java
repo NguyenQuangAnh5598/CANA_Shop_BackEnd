@@ -3,12 +3,13 @@ package com.example.cana_be.model;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
+
 
 @Entity
 @Table
-public class Orders {
+public class Orders implements Serializable {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)

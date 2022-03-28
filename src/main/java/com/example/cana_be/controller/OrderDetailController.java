@@ -1,10 +1,13 @@
 package com.example.cana_be.controller;
 
+import com.example.cana_be.dto.request.OrderDetailForm;
 import com.example.cana_be.dto.response.ResponseMessage;
 import com.example.cana_be.model.OrderDetail;
 import com.example.cana_be.model.Orders;
+import com.example.cana_be.model.Product;
 import com.example.cana_be.service.extend.IOrderDetailService;
 import com.example.cana_be.service.extend.IOrderService;
+import com.example.cana_be.service.extend.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/orderdetail")
 public class OrderDetailController {
+@Autowired
+    IProductService productService;
 
     @Autowired
     IOrderDetailService orderDetailService;
@@ -43,9 +48,10 @@ public class OrderDetailController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewOrderDetail(@RequestBody OrderDetail orderDetail) {
-        if (orderDetail.getProduct().getQuantity() == orderDetail.getOrderQuantity()) {
-            orderDetailService.save(orderDetail);
+    public ResponseEntity<?> createNewOrderDetail(@RequestBody OrderDetailForm orderDetailForm) {
+        Optional<Product> product = productService.findById(orderDetailForm.getProductId());
+        if (product.get().getQuantity() >= orderDetailForm.getOrderQuantity()) {
+            orderDetailService.createNewOrderDetail(orderDetailForm);
             return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.CREATED);
         }
         return new ResponseEntity<>(new ResponseMessage("Số lượng hàng không đủ, xin đặt lại sau"), HttpStatus.OK);
@@ -57,6 +63,7 @@ public class OrderDetailController {
         if (!orderDetailOptional.isPresent()) {
             return new ResponseEntity<>(new ResponseMessage("Không Có"), HttpStatus.NOT_FOUND);
         }
+        orderDetail.setId(orderDetailOptional.get().getId());
         orderDetailService.save(orderDetail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
