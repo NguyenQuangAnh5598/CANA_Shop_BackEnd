@@ -1,15 +1,20 @@
 package com.example.cana_be.controller;
 
+import com.example.cana_be.dto.request.ChangePassword;
 import com.example.cana_be.dto.response.ResponseMessage;
 import com.example.cana_be.model.Orders;
 import com.example.cana_be.model.User;
+import com.example.cana_be.security.userprincal.UsersDetailService;
 import com.example.cana_be.service.extend.IOrderService;
 import com.example.cana_be.service.extend.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +27,12 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private UsersDetailService usersDetailService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public ResponseEntity<List<User>> showList() {
@@ -39,6 +50,20 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userOptional.get(), HttpStatus.OK);
+    }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changPassword(@RequestBody ChangePassword changePassword) {
+        User user = usersDetailService.getCurrentUser();
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        if(bCryptPasswordEncoder.matches(changePassword.getOldPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
+            userService.save(user);
+            return new ResponseEntity<>(new ResponseMessage("Change password successful!"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ResponseMessage("Error!"), HttpStatus.OK);
+        }
+
     }
 
     @PostMapping
