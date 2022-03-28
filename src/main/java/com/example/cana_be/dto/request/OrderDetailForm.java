@@ -1,8 +1,5 @@
 package com.example.cana_be.dto.request;
 
-import com.example.cana_be.model.Orders;
-import com.example.cana_be.model.Product;
-
 public class OrderDetailForm {
     private Long productId;
 
