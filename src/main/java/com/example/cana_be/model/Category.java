@@ -1,9 +1,11 @@
 package com.example.cana_be.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 @Entity
 @Table
-public class Category {
+public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,12 +1,12 @@
 package com.example.cana_be.model;
 
-import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
-public class OrderDetail {
+public class OrderDetail implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

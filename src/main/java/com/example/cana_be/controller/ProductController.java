@@ -4,6 +4,9 @@ import com.example.cana_be.model.Product;
 import com.example.cana_be.repository.IProductRepo;
 import com.example.cana_be.service.extend.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,16 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<?> showAllProduct() {
         List<Product> productList = productService.findAll();
+        if (productList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/page")
+    public ResponseEntity<?> showAllProductByPage(@PageableDefault(value = 5) Pageable pageable) {
+        Page<Product> productList = productService.findAllProduct(pageable);
         if (productList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

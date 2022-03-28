@@ -10,6 +10,7 @@ import com.example.cana_be.security.userprincal.UsersDetailService;
 import com.example.cana_be.service.extend.IOrderDetailService;
 import com.example.cana_be.service.extend.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,7 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
 
     @Override
     public void save(OrderDetail orderDetail) {
+        orderDetailRepo.save(orderDetail);
     }
 
     @Override

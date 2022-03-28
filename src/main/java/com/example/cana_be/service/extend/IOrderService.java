@@ -20,4 +20,5 @@ public interface IOrderService extends IGeneralService<Orders> {
 
     double statisticalRevenueByTime(Date startDate, Date endDate);
 
+    List<Orders> findAllOrderByStatusId(int id);
 }
