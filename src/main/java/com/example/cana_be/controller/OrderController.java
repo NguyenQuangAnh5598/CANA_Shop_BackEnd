@@ -7,6 +7,7 @@ import com.example.cana_be.service.extend.IOrderDetailService;
 import com.example.cana_be.service.extend.IOrderService;
 import com.example.cana_be.service.extend.IProductService;
 import com.example.cana_be.service.extend.IUserService;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,7 +95,7 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/cancelOrder/{id}")
+    @DeleteMapping("/cancelOrder/{id}")
     public ResponseEntity<?> cancelOrderById(@PathVariable Long id) {
         Orders orders = orderService.findById(id).get();
         //chuyen trang thai order = 5
@@ -168,4 +169,9 @@ public class OrderController {
         return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
 
+    @GetMapping("/findAllOrderByUserIdAndStatusId/{userId}/{statusId}")
+    public ResponseEntity<?> findAllOrderByUserIdAndStatusId(@PathVariable Long userId, @PathVariable int statusId) {
+        List<Orders> ordersList = orderService.findAllByUserIdAndStatusId(userId, statusId);
+        return new ResponseEntity<>(ordersList, HttpStatus.OK);
+    }
 }
