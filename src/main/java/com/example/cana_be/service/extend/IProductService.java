@@ -15,4 +15,5 @@ public interface IProductService extends IGeneralService<Product> {
     List<Product> findProductByPrice(double minPrice, double maxPrice);
     List<Product> findByName(String name);
 Page<Product> findAllProduct(Pageable pageable);
+    List<Product> searchProduct(String name,Long id,Long minPrice,Long maxPrice);
 }

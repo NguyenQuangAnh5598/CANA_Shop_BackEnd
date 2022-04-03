@@ -63,4 +63,9 @@ public class ProductServiceImpl implements IProductService {
     public Page<Product> findAllProduct(Pageable pageable) {
         return productRepo.findAll(pageable);
     }
+
+    @Override
+    public List<Product> searchProduct(String name, Long id, Long minPrice, Long maxPrice) {
+        return productRepo.searchProduct(name,id,minPrice,maxPrice);
+    }
 }

@@ -6,6 +6,7 @@ import com.example.cana_be.service.extend.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,6 +95,10 @@ public class ProductController {
     @GetMapping("/findbyname")
     public ResponseEntity<List<Product>> getProductByName(@RequestParam String name) {
         return new ResponseEntity<>(productService.findByName(name), HttpStatus.OK);
+    }
+    @GetMapping("/searchProduct")
+    public ResponseEntity<List<Product>> searchProduct(@Param("name") String name, @Param("id") Long id, @Param("minPrice") Long minPrice, @Param("maxPrice") Long maxPrice ){
+        return new ResponseEntity<>(productService.searchProduct(name,id,minPrice,maxPrice),HttpStatus.OK);
     }
 
 }
