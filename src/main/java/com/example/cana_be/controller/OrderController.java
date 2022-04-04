@@ -1,5 +1,6 @@
 package com.example.cana_be.controller;
 
+import com.example.cana_be.dto.request.DateTimeDTO;
 import com.example.cana_be.dto.response.ResponseMessage;
 import com.example.cana_be.model.OrderDetail;
 import com.example.cana_be.model.Orders;
@@ -7,6 +8,7 @@ import com.example.cana_be.service.extend.IOrderDetailService;
 import com.example.cana_be.service.extend.IOrderService;
 import com.example.cana_be.service.extend.IProductService;
 import com.example.cana_be.service.extend.IUserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,9 +65,9 @@ public class OrderController {
         return new ResponseEntity<>(ordersList, HttpStatus.OK);
     }
 
-    @GetMapping("/statisticalOrderByTime")
-    public ResponseEntity<?> statisticalOrderByTime(@RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate) {
-        List<Orders> ordersList = orderService.statisticalOrderByTime(startDate, endDate);
+    @PutMapping("/statisticalOrderByTime")
+    public ResponseEntity<?> statisticalOrderByTime(@RequestBody DateTimeDTO dateTimeDTO) {
+        List<Orders> ordersList = orderService.statisticalOrderByTime(dateTimeDTO.getStartDate(), dateTimeDTO.getEndDate());
         if (ordersList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -94,7 +96,7 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/cancelOrder/{id}")
+    @DeleteMapping("/cancelOrder/{id}")
     public ResponseEntity<?> cancelOrderById(@PathVariable Long id) {
         Orders orders = orderService.findById(id).get();
         //chuyen trang thai order = 5
@@ -131,6 +133,7 @@ public class OrderController {
 
     @PutMapping("/payment/{id}")
     public ResponseEntity<?> payment(@PathVariable Long id) {
+        double totalPrice = 0;
         Optional<Orders> orders = orderService.findById(id);
         List<OrderDetail> orderDetailList = (List<OrderDetail>) orderDetailService.findAllByOrders(orders.get());
         List<OrderDetail> errorOrderDetail = new ArrayList<>();
@@ -147,6 +150,10 @@ public class OrderController {
             if (!orderDetailList.isEmpty()) {
                 orders.get().setStatusId(2);
                 orders.get().setCreateTime(Timestamp.from(Instant.now()));
+                for (int i = 0; i < orderDetailList.size(); i++) {
+                    totalPrice += (orderDetailList.get(i).getProduct().getPrice() * orderDetailList.get(i).getOrderQuantity());
+                }
+                orders.get().setTotalPrice(totalPrice);
                 orderService.save(orders.get());
                 if (!orderService.existsByUserAndStatusId(orders.get().getUser(), 1)) {
                     orderService.createCurrentOrder(orders.get().getUser());
@@ -168,4 +175,9 @@ public class OrderController {
         return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
 
+    @GetMapping("/findAllOrderByUserIdAndStatusId/{userId}/{statusId}")
+    public ResponseEntity<?> findAllOrderByUserIdAndStatusId(@PathVariable Long userId, @PathVariable int statusId) {
+        List<Orders> ordersList = orderService.findAllByUserIdAndStatusId(userId, statusId);
+        return new ResponseEntity<>(ordersList, HttpStatus.OK);
+    }
 }

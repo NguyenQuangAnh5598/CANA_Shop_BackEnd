@@ -93,12 +93,18 @@ public class ProductController {
     }
 
     @GetMapping("/findbyname")
-    public ResponseEntity<List<Product>> getProductByName(@RequestParam String name) {
+    public ResponseEntity<List<Product>> getProductByName(@RequestParam  String name) {
         return new ResponseEntity<>(productService.findByName(name), HttpStatus.OK);
     }
+
     @GetMapping("/searchProduct")
     public ResponseEntity<List<Product>> searchProduct(@Param("name") String name, @Param("id") Long id, @Param("minPrice") Long minPrice, @Param("maxPrice") Long maxPrice ){
         return new ResponseEntity<>(productService.searchProduct(name,id,minPrice,maxPrice),HttpStatus.OK);
     }
 
+
+    @GetMapping("/top3BestSale")
+    public  ResponseEntity<List<Product>> top3BestSale(){
+        return new ResponseEntity<>(productService.top3BestSale(),HttpStatus.OK);
+    }
 }
