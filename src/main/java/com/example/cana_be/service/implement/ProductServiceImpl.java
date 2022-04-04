@@ -63,4 +63,9 @@ public class ProductServiceImpl implements IProductService {
     public Page<Product> findAllProduct(Pageable pageable) {
         return productRepo.findAll(pageable);
     }
+
+    @Override
+    public List<Product> top3BestSale() {
+        return productRepo.top3BestSale();
+    }
 }

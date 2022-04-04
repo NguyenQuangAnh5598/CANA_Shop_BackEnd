@@ -128,5 +128,4 @@ public class UserPrinciple implements UserDetails {
         this.avatar = avatar;
     }
 
-
 }
