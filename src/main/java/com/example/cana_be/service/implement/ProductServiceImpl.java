@@ -65,7 +65,10 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> top3BestSale() {
+    public List<Product> searchProduct(String name, Long id, Long minPrice, Long maxPrice) {
+        return productRepo.searchProduct(name, id, minPrice, maxPrice);
+    }
+    public List<Product> top3BestSale(){
         return productRepo.top3BestSale();
     }
 }

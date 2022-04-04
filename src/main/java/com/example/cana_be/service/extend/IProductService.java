@@ -11,13 +11,18 @@ import java.util.List;
 
 public interface IProductService extends IGeneralService<Product> {
     void setQuantity(Product product, int quantity);
+
     public List<Product> findProductByCategoryName(String name);
+
     List<Product> findProductByPrice(double minPrice, double maxPrice);
+
     List<Product> findByName(String name);
 
     List<Product> top3BestSale();
 
 
-Page<Product> findAllProduct(Pageable pageable);
+    Page<Product> findAllProduct(Pageable pageable);
 
+    List<Product> searchProduct(String name, Long id, Long minPrice, Long maxPrice);
 }
+
