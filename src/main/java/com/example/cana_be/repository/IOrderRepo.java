@@ -33,4 +33,6 @@ public interface IOrderRepo extends JpaRepository<Orders, Long> {
     double statisticalRevenueByTime(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
 
     List<Orders> findAllByStatusId(int id);
+
+    List<Orders> findAllByUserIdAndStatusId(Long userId, int statusId);
 }

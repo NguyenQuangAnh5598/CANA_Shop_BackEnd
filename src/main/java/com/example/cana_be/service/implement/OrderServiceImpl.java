@@ -54,7 +54,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public Boolean existsByUserAndStatusId(User user, int id) {
-        return orderRepo.existsByUserAndStatusId(user,id);
+        return orderRepo.existsByUserAndStatusId(user, id);
     }
 
     @Override
@@ -76,5 +76,10 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public List<Orders> findAllOrderByStatusId(int id) {
         return orderRepo.findAllByStatusId(id);
+    }
+
+    @Override
+    public List<Orders> findAllByUserIdAndStatusId(Long userId, int statusId) {
+        return orderRepo.findAllByUserIdAndStatusId(userId, statusId);
     }
 }
