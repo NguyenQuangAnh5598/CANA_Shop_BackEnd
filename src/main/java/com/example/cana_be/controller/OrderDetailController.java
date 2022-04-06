@@ -20,7 +20,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/orderdetail")
 public class OrderDetailController {
-@Autowired
+    @Autowired
     IProductService productService;
 
     @Autowired
@@ -51,8 +51,8 @@ public class OrderDetailController {
     public ResponseEntity<?> createNewOrderDetail(@RequestBody OrderDetailForm orderDetailForm) {
         Optional<Product> product = productService.findById(orderDetailForm.getProductId());
         if (product.get().getQuantity() >= orderDetailForm.getOrderQuantity()) {
-            orderDetailService.createNewOrderDetail(orderDetailForm);
-            return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.CREATED);
+            OrderDetail orderDetail = orderDetailService.createNewOrderDetail(orderDetailForm);
+            return new ResponseEntity<>(orderDetail, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(new ResponseMessage("Số lượng hàng không đủ, xin đặt lại sau"), HttpStatus.OK);
     }
