@@ -11,6 +11,7 @@ import com.example.cana_be.service.extend.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,6 +49,7 @@ public class OrderDetailController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseEntity<?> createNewOrderDetail(@RequestBody OrderDetailForm orderDetailForm) {
         Optional<Product> product = productService.findById(orderDetailForm.getProductId());
         if (product.get().getQuantity() >= orderDetailForm.getOrderQuantity()) {
@@ -58,6 +60,7 @@ public class OrderDetailController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseEntity<?> updateOrderDetail(@RequestBody OrderDetail orderDetail) {
         Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(orderDetail.getId());
         if (!orderDetailOptional.isPresent()) {
@@ -69,6 +72,7 @@ public class OrderDetailController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseEntity<?> deleteOrderDetailById(@PathVariable Long id) {
         Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(id);
         if (!orderDetailOptional.isPresent()) {
