@@ -50,25 +50,24 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
     }
 
     @Override
-    public void createNewOrderDetail(OrderDetailForm orderDetailForm) {
+    public OrderDetail createNewOrderDetail(OrderDetailForm orderDetailForm) {
         OrderDetail orderDetail = new OrderDetail();
         Orders orders = orderService.findOrdersByUserAndStatusId(usersDetailService.getCurrentUser(), 1);
         orderDetail.setOrders(orders);
         Optional<Product> product = productRepo.findById(orderDetailForm.getProductId());
-        boolean check = true;
         List<OrderDetail> orderDetailList = (List<OrderDetail>) findAllByOrders(orders);
+        orderDetail.setProduct(product.get());
         for (int i = 0; i < orderDetailList.size(); i++) {
             if (product.get().getId() == orderDetailList.get(i).getProduct().getId()) {
               orderDetail.setOrderQuantity(orderDetailList.get(i).getOrderQuantity() + orderDetailForm.getOrderQuantity());
               orderDetail.setId(orderDetailList.get(i).getId());
-              check = false;
+                orderDetailRepo.save(orderDetail);
+                return orderDetail;
             }
         }
-        if (check) {
             orderDetail.setOrderQuantity(orderDetailForm.getOrderQuantity());
-        }
-        orderDetail.setProduct(product.get());
         orderDetailRepo.save(orderDetail);
+        return new OrderDetail();
     }
 
     @Override

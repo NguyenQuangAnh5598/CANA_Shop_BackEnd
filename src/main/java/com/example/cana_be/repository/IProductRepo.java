@@ -32,6 +32,6 @@ public interface IProductRepo extends JpaRepository<Product,Long> {
             "on p.id = od.product_id \n" +
             "group by   p.id,description,image,manufacturer,name,price,p.quantity,category_id\n" +
             "order by sum(order_quantity) desc,price asc \n" +
-            "limit 3; ",nativeQuery=true)
+            "limit 4; ",nativeQuery=true)
     List<Product> top3BestSale();
 }

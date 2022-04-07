@@ -14,4 +14,7 @@ Boolean existsByUserName(String userName);
 Boolean existsByEmail(String email);
 
 List<User> findByUsernameOrEmail(String userOrEmail);
+
+    Optional<User> findUserByEmail(String email);
+
 }

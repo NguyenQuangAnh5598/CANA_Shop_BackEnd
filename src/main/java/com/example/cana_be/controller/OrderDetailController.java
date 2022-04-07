@@ -5,12 +5,15 @@ import com.example.cana_be.dto.response.ResponseMessage;
 import com.example.cana_be.model.OrderDetail;
 import com.example.cana_be.model.Orders;
 import com.example.cana_be.model.Product;
+import com.example.cana_be.model.User;
+import com.example.cana_be.security.userprincal.UsersDetailService;
 import com.example.cana_be.service.extend.IOrderDetailService;
 import com.example.cana_be.service.extend.IOrderService;
 import com.example.cana_be.service.extend.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +23,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/orderdetail")
 public class OrderDetailController {
-@Autowired
+    @Autowired
     IProductService productService;
 
     @Autowired
@@ -28,6 +31,9 @@ public class OrderDetailController {
 
     @Autowired
     IOrderService orderService;
+
+    @Autowired
+    UsersDetailService usersDetailService;
 
     @GetMapping
     public ResponseEntity<?> showAllOrderDetail() {
@@ -48,27 +54,33 @@ public class OrderDetailController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseEntity<?> createNewOrderDetail(@RequestBody OrderDetailForm orderDetailForm) {
         Optional<Product> product = productService.findById(orderDetailForm.getProductId());
         if (product.get().getQuantity() >= orderDetailForm.getOrderQuantity()) {
-            orderDetailService.createNewOrderDetail(orderDetailForm);
-            return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.CREATED);
+            OrderDetail orderDetail = orderDetailService.createNewOrderDetail(orderDetailForm);
+            return new ResponseEntity<>(orderDetail, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(new ResponseMessage("Số lượng hàng không đủ, xin đặt lại sau"), HttpStatus.OK);
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseEntity<?> updateOrderDetail(@RequestBody OrderDetail orderDetail) {
         Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(orderDetail.getId());
         if (!orderDetailOptional.isPresent()) {
-            return new ResponseEntity<>(new ResponseMessage("Không Có"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage("No"), HttpStatus.NOT_FOUND);
         }
         orderDetail.setId(orderDetailOptional.get().getId());
         orderDetailService.save(orderDetail);
-        return new ResponseEntity<>(HttpStatus.OK);
+        User user = usersDetailService.getCurrentUser();
+        Orders orders = orderService.findOrdersByUserAndStatusId(user, 1);
+        List<OrderDetail> orderDetailList = (List<OrderDetail>) orderDetailService.findAllByOrders(orders);
+        return new ResponseEntity<>(orderDetailList, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseEntity<?> deleteOrderDetailById(@PathVariable Long id) {
         Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(id);
         if (!orderDetailOptional.isPresent()) {

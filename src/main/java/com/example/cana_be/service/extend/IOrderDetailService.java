@@ -7,5 +7,5 @@ import com.example.cana_be.service.IGeneralService;
 
 public interface IOrderDetailService extends IGeneralService<OrderDetail> {
     Iterable<OrderDetail> findAllByOrders(Orders orders);
-    void createNewOrderDetail(OrderDetailForm orderDetailForm);
+    OrderDetail createNewOrderDetail(OrderDetailForm orderDetailForm);
 }
