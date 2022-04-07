@@ -53,4 +53,9 @@ public class UserServiceImpl implements IUserService {
     public List<User> findByUsernameOrEmail(String userOrEmail) {
         return userRepo.findByUsernameOrEmail(userOrEmail);
     }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        return userRepo.findUserByEmail(email);
+    }
 }

@@ -17,4 +17,7 @@ public interface IUserRepo extends JpaRepository<User,Long> {
 
     @Query(value = "select * from users u where u.username like CONCAT('%',:userOrEmail,'%' )or u.email like CONCAT('%',:userOrEmail,'%' )",nativeQuery = true)
     List<User> findByUsernameOrEmail(@Param("userOrEmail") String userOrEmail);
+
+    @Query(value = "select u from User u where u.email = ?1")
+    Optional<User> findUserByEmail(String email);
 }
