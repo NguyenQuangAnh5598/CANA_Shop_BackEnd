@@ -93,8 +93,8 @@ public class UserController {
         userService.remove(id);
         return new ResponseEntity<>(new ResponseMessage("Delete completed"), HttpStatus.OK);
     }
-    @GetMapping("/findUserByUsernameOrEmail")
-    public ResponseEntity<List<User>> getUserByUsernameOrEmail(@RequestParam() String userOrEmail){
+    @GetMapping("/findUserByUsernameOrEmail/{userOrEmail}")
+    public ResponseEntity<List<User>> getUserByUsernameOrEmail(@PathVariable String userOrEmail){
         List<User> userList = userService.findByUsernameOrEmail(userOrEmail);
         if(userList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
