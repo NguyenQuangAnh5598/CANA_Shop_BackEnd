@@ -5,6 +5,8 @@ import com.example.cana_be.dto.response.ResponseMessage;
 import com.example.cana_be.model.OrderDetail;
 import com.example.cana_be.model.Orders;
 import com.example.cana_be.model.Product;
+import com.example.cana_be.model.User;
+import com.example.cana_be.security.userprincal.UsersDetailService;
 import com.example.cana_be.service.extend.IOrderDetailService;
 import com.example.cana_be.service.extend.IOrderService;
 import com.example.cana_be.service.extend.IProductService;
@@ -29,6 +31,9 @@ public class OrderDetailController {
 
     @Autowired
     IOrderService orderService;
+
+    @Autowired
+    UsersDetailService usersDetailService;
 
     @GetMapping
     public ResponseEntity<?> showAllOrderDetail() {
@@ -64,11 +69,14 @@ public class OrderDetailController {
     public ResponseEntity<?> updateOrderDetail(@RequestBody OrderDetail orderDetail) {
         Optional<OrderDetail> orderDetailOptional = orderDetailService.findById(orderDetail.getId());
         if (!orderDetailOptional.isPresent()) {
-            return new ResponseEntity<>(new ResponseMessage("Không Có"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage("No"), HttpStatus.NOT_FOUND);
         }
         orderDetail.setId(orderDetailOptional.get().getId());
         orderDetailService.save(orderDetail);
-        return new ResponseEntity<>(HttpStatus.OK);
+        User user = usersDetailService.getCurrentUser();
+        Orders orders = orderService.findOrdersByUserAndStatusId(user, 1);
+        List<OrderDetail> orderDetailList = (List<OrderDetail>) orderDetailService.findAllByOrders(orders);
+        return new ResponseEntity<>(orderDetailList, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
