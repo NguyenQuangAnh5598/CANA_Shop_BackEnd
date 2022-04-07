@@ -31,7 +31,7 @@ public interface IOrderRepo extends JpaRepository<Orders, Long> {
             "where DATE(create_time) >= :startDate and DATE(create_time) <= :endDate " +
             "and status_id = 4 ", nativeQuery = true)
     double statisticalRevenueByTime(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
-
+    @Query(value = "select o from  Orders o where o.statusId = ?1")
     List<Orders> findAllByStatusId(int id);
 
     List<Orders> findAllByUserIdAndStatusId(Long userId, int statusId);

@@ -63,7 +63,7 @@ public class UserController {
             userService.save(user);
             return new ResponseEntity<>(new ResponseMessage("Change password successful!"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseMessage("Error!"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("Error"), HttpStatus.OK);
         }
 
     }
