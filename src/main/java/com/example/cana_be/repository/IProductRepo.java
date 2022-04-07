@@ -23,7 +23,7 @@ public interface IProductRepo extends JpaRepository<Product,Long> {
     List<Product> findByName(String name);
 
         @Query(value = "select * from product p join category c on p.category_id = c.id where (:name is null or p.name like %:name%) and" +
-        " (:id is null or c.id in (:id)) and (:minPrice is null or :maxPrice is null or p.price between :minPrice and :maxPrice)",nativeQuery = true)
+        " (:id is null or c.id in (:id)) and (:minPrice is null or  p.price >= :minPrice) and (:maxPrice is null or :maxPrice >= p.price)",nativeQuery = true)
     List<Product> searchProduct(@Param("name") String name,@Param("id")Long id,@Param("minPrice")Long minPrice,@Param("maxPrice")Long maxPrice);
 
 
