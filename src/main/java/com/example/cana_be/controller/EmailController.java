@@ -31,7 +31,7 @@ public class EmailController {
 
     @PostMapping
     public ResponseEntity<?> getForgotPassword(@RequestBody String email) {
-        String password = String.valueOf((int) (Math.random() * 900000));
+        String password = String.valueOf((int) (((Math.random()) * ((999999 - 100000)) + 100000)));
         Optional<User> userOptional = userService.findUserByEmail(email);
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(new ResponseMessage("No Email"), HttpStatus.OK);
