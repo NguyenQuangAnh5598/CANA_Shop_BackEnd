@@ -26,6 +26,12 @@ public interface IOrderRepo extends JpaRepository<Orders, Long> {
             "and status_id = 4 ", nativeQuery = true)
     List<Orders> statisticalOrderByTime(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
 
+    @Query(value = "select * " +
+            "from cana_shop.orders " +
+            "where DATE(create_time) >= :startDate and DATE(create_time) <= :endDate " +
+            "and status_id = 5 ", nativeQuery = true)
+    List<Orders> statisticalOrderCancelByTime(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
+
     @Query(value = "select sum(total_price) as total_revenue " +
             "from cana_shop.orders " +
             "where DATE(create_time) >= :startDate and DATE(create_time) <= :endDate " +

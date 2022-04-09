@@ -18,6 +18,8 @@ public interface IOrderService extends IGeneralService<Orders> {
 
     List<Orders> statisticalOrderByTime(Date startDate, Date endDate);
 
+    List<Orders> statisticalOrderCancelByTime(Date startDate, Date endDate);
+
     double statisticalRevenueByTime(Date startDate, Date endDate);
 
     List<Orders> findAllOrderByStatusId(int id);
