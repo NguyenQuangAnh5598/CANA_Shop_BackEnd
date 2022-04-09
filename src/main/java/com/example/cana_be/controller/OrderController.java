@@ -75,6 +75,15 @@ public class OrderController {
         return new ResponseEntity<>(ordersList, HttpStatus.OK);
     }
 
+    @PutMapping("/statisticalOrderCancelByTime")
+    public ResponseEntity<?> statisticalOrderCancelByTime(@RequestBody DateTimeDTO dateTimeDTO) {
+        List<Orders> ordersList = orderService.statisticalOrderCancelByTime(dateTimeDTO.getStartDate(), dateTimeDTO.getEndDate());
+        if (ordersList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(ordersList, HttpStatus.OK);
+    }
+
     @GetMapping("/statisticalRevenueByTime")
     public ResponseEntity<?> statisticalRevenueByTime(@RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate) {
         double totalRevenue = orderService.statisticalRevenueByTime(startDate, endDate);

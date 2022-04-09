@@ -68,6 +68,11 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
+    public List<Orders> statisticalOrderCancelByTime(Date startDate, Date endDate) {
+        return orderRepo.statisticalOrderByTime(startDate, endDate);
+    }
+
+    @Override
     public double statisticalRevenueByTime(Date startDate, Date endDate) {
         return orderRepo.statisticalRevenueByTime(startDate, endDate);
     }
