@@ -27,7 +27,7 @@ public class User implements Serializable {
     private Long id;
 
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min = 6, max = 50)
     private String username;
 
     @NotBlank
@@ -35,7 +35,7 @@ public class User implements Serializable {
     private String password;
 
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min = 6, max = 50)
     private String name;
 
     private String avatar;
