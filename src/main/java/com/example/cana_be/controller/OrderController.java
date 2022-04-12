@@ -172,7 +172,7 @@ public class OrderController {
                     return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
                 }
             } else {
-                return new ResponseEntity<>(new ResponseMessage("NO"), HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(new ResponseMessage("NO"), HttpStatus.OK);
             }
         } else {
             return new ResponseEntity<>(errorOrderDetail, HttpStatus.OK);
