@@ -1,6 +1,6 @@
 package com.example.cana_be.service.implement;
 
-import com.example.cana_be.model.Comment;
+import com.example.cana_be.model.Commentt;
 import com.example.cana_be.repository.ICommentRepo;
 import com.example.cana_be.security.userprincal.UsersDetailService;
 import com.example.cana_be.service.extend.ICommentService;
@@ -20,18 +20,18 @@ public class CommentServiceImpl implements ICommentService {
     UsersDetailService usersDetailService;
 
     @Override
-    public List<Comment> findAll() {
+    public List<Commentt> findAll() {
         return null;
     }
 
     @Override
-    public Optional<Comment> findById(Long id) {
+    public Optional<Commentt> findById(Long id) {
         return iCommentRepo.findById(id);
     }
 
     @Override
-    public void save(Comment comment) {
-        iCommentRepo.save(comment);
+    public void save(Commentt commentt) {
+        iCommentRepo.save(commentt);
     }
 
     @Override
@@ -40,8 +40,8 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
-    public List<Comment> findAllByProductId(Long productId) {
-        return iCommentRepo.findAllByProductId(productId);
+    public List<Commentt> findAllByProductId(Long productId) {
+        return iCommentRepo.findAllByProductIdOrderById(productId);
     }
 
 }

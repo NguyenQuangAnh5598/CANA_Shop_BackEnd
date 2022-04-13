@@ -1,7 +1,7 @@
 package com.example.cana_be.controller;
 
 import com.example.cana_be.dto.response.ResponseMessage;
-import com.example.cana_be.model.Comment;
+import com.example.cana_be.model.Commentt;
 import com.example.cana_be.model.User;
 import com.example.cana_be.security.userprincal.UsersDetailService;
 import com.example.cana_be.service.extend.ICommentService;
@@ -25,24 +25,30 @@ public class CommentController {
     UsersDetailService usersDetailService;
 
     @PostMapping
-    public ResponseEntity<?> createNewComment(@RequestBody Comment comment) {
-        commentService.save(comment);
+    public ResponseEntity<?> createNewComment(@RequestBody Commentt commentt) {
+        commentService.save(commentt);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/showAllComment")
     public ResponseEntity<?> findAllCommentByProductId(@RequestBody String id) {
         Long newId =  Long.parseLong(id);
-        List<Comment> commentList = commentService.findAllByProductId(newId);
-        return new ResponseEntity<>(commentList, HttpStatus.OK);
+        List<Commentt> commenttList = commentService.findAllByProductId(newId);
+        return new ResponseEntity<>(commenttList, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findComment(@PathVariable Long id) {
+        List<Commentt> commenttList = commentService.findAllByProductId(id);
+        return new ResponseEntity<>(commenttList, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        Optional<Comment> commentOptional = commentService.findById(id);
+        Optional<Commentt> commentOptional = commentService.findById(id);
         User user = usersDetailService.getCurrentUser();
         if(!commentOptional.isPresent()) {
-            return new ResponseEntity<>(new ResponseMessage("NOT"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseMessage("NOT"), HttpStatus.OK);
         } else if(commentOptional.get().getUser().getId() == user.getId()) {
             commentService.remove(id);
             return new ResponseEntity<>(new ResponseMessage("OK"), HttpStatus.OK);
